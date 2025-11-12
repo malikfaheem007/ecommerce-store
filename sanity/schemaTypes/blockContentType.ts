@@ -1,5 +1,6 @@
 import {defineArrayMember, defineType} from "sanity";
 import {ImageIcon} from "@sanity/icons";
+
 export const blockContentType = defineType({
   title: "Block Content",
   name: "blockContent",
@@ -22,11 +23,18 @@ export const blockContentType = defineType({
           {title: "Emphasis", value: "em"},
         ],
         annotations: [
-          {
-            title: "URL",
-            name: "href",
-            type: "url",
-          },
+          defineArrayMember({
+            title: "Link",
+            name: "link",
+            type: "object",
+            fields: [
+              {
+                title: "URL",
+                name: "href",
+                type: "url",
+              },
+            ],
+          }),
         ],
       },
     }),
