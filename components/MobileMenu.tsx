@@ -1,7 +1,7 @@
 "use client";
-import { AlignLeft } from "lucide-react";
+import {AlignLeft} from "lucide-react";
 import SideMenu from "./SideMenu";
-import { useState } from "react";
+import {useState} from "react";
 
 const MobileMenu = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

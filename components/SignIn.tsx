@@ -1,4 +1,4 @@
-import { SignInButton } from "@clerk/nextjs";
+import {SignInButton} from "@clerk/nextjs";
 
 const SignIn = () => {
   return (
