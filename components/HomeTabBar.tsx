@@ -11,9 +11,9 @@ const HomeTabBar = ({selectedTab, onTabSelect}: Props) => {
       <div className="flex items-center gap-3 text-sm font-semibold">
         {productType?.map((item) => (
           <button
-            onClick={() => onTabSelect(item?.title)}
+            onClick={() => onTabSelect(item?.value)}
             key={item?.title}
-            className={`border border-shop_light_green px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-shop_light_green hover:border-shop_light_bg hover:text-white hoverEffect ${selectedTab === item?.title ? "bg-shop_light_green text-white border-shop_light_green" : "bg-shop_light_green/20"}`}>
+            className={`border border-shop_light_green px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-shop_light_green hover:border-shop_light_bg hover:text-white hoverEffect ${selectedTab === item?.value ? "bg-shop_light_green text-white border-shop_light_green" : "bg-shop_light_green/20"}`}>
             {item?.title}
           </button>
         ))}
