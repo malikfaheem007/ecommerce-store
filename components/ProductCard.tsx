@@ -6,6 +6,7 @@ import Link from "next/link";
 import AddToWishlistButton from "./AddToWishlistButton";
 import {Title} from "./ui/text";
 import PriceView from "./PriceView";
+import AddToCartButton from "./AddToCartButton";
 
 const ProductCard = ({product}: {product: Product}) => {
   return (
@@ -44,7 +45,7 @@ const ProductCard = ({product}: {product: Product}) => {
           </Link>
         )}
       </div>
-      <div className="py-3 flex flex-col gap-2">
+      <div className="p-3 flex flex-col gap-2">
         {product?.categories && (
           <p className="uppercase line-clamp-1 text-xs text-shop_light_text">
             {product?.categories.map((cat) => cat).join(",  ")}
@@ -85,6 +86,7 @@ const ProductCard = ({product}: {product: Product}) => {
           discount={product?.discount}
           className="text-sm"
         />
+        <AddToCartButton product={product} className="w-36 rounded-full" />
       </div>
     </div>
   );
