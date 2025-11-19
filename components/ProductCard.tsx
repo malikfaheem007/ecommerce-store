@@ -1,6 +1,6 @@
 import {Product} from "@/sanity.types";
 import {urlFor} from "@/sanity/lib/image";
-import {Flame} from "lucide-react";
+import {Flame, StarIcon} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import AddToWishlistButton from "./AddToWishlistButton";
@@ -8,7 +8,7 @@ import {Title} from "./ui/text";
 
 const ProductCard = ({product}: {product: Product}) => {
   return (
-    <div className="text-sm border-[1px] border-dark_blue/20 rounded-md bg-white group">
+    <div className="text-sm border border-dark_blue/20 rounded-md bg-white group">
       <div className="relative group overflow-hidden bg-shop_light_bg">
         {product?.images && (
           <Image
@@ -49,7 +49,36 @@ const ProductCard = ({product}: {product: Product}) => {
             {product?.categories.map((cat) => cat).join(",  ")}
           </p>
         )}
-        <Title className="text-sm line-clamp-1">{product?.name}</Title>
+
+        <Title className="text-sm md:text-sm line-clamp-1">
+          {product?.name}
+        </Title>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5">
+            {[...Array(5)].map((_, index) => (
+              <StarIcon
+                size={12}
+                key={index}
+                className={
+                  index < 4 ?
+                    "text-shop_lighter_green"
+                  : "text-shop_lighter_text"
+                }
+                fill={index < 4 ? "#93d991" : "#ababab"}
+              />
+            ))}
+          </div>
+          <p className="text-shop_light_text text-xs tracking-wide">
+            5 Reviews
+          </p>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <p className="font-medium">In Stock</p>
+          <p
+            className={`${product?.stock === 0 ? "text-red-600" : "text-shop_light_green font-semibold"} `}>
+            {(product?.stock as number) > 0 ? product?.stock : "unavailable"}
+          </p>
+        </div>
       </div>
     </div>
   );
