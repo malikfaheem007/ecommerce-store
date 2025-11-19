@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 
 const Title = ({
   children,
@@ -12,8 +12,7 @@ const Title = ({
       className={cn(
         "text-2xl md:text-3xl font-bold text-shop_dark_green capitalize tracking-wide font-sans",
         className
-      )}
-    >
+      )}>
       {children}
     </h2>
   );
@@ -40,4 +39,4 @@ const SubText = ({
 }) => {
   return <p className={cn("text-gray-600 text-sm", className)}>{children}</p>;
 };
-export { Title, SubText, SubTitle };
+export {Title, SubText, SubTitle};
