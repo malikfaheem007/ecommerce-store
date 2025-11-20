@@ -1,6 +1,6 @@
 "use client";
 import {cn} from "@/lib/utils";
-import {Loader, Loader2} from "lucide-react";
+import {Loader2} from "lucide-react";
 import {motion} from "motion/react";
 const NoProductsAvailable = ({
   selectedTab,
