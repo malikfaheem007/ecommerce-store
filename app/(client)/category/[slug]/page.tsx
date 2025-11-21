@@ -1,5 +1,5 @@
-const Categorypage = () => {
+const CategoryPage = () => {
   return <div>Category Page</div>;
 };
 
-export default Categorypage;
+export default CategoryPage;
