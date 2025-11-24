@@ -1,12 +1,12 @@
 "use client";
-import { headerDeta } from "@/constants/data";
+import {headerDeta} from "@/constants/data";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 
 const HeaderMenu = () => {
   const pathname = usePathname();
   return (
-    <div className="hidden md:inline-flex w-1/3 items-center gap-7 text-sm capitalize font-semibold text-lightColor ">
+    <div className="hidden md:inline-flex w-1/3 items-center justify-center gap-7 text-sm capitalize font-semibold text-lightColor ">
       {headerDeta.map((item) => (
         <Link
           key={item?.title}
@@ -14,8 +14,7 @@ const HeaderMenu = () => {
           className={`hover:text-shop_light_green
         hoverEffect relative group ${
           pathname === item?.href && "text-shop_light_green"
-        }`}
-        >
+        }`}>
           {item?.title}
           <span
             className={`absolute -bottom-0.5 left-1/2 w-0 h-0.5 bg-shop_light_green group-hover:w-1/2 hoverEffect group-hover:left-0 ${
