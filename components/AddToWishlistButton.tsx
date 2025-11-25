@@ -6,7 +6,7 @@ const AddToWishlistButton = ({
   product,
   className,
 }: {
-  product: Product;
+  product?: Product;
   className?: string;
 }) => {
   return (
