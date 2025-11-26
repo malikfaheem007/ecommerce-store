@@ -144,3 +144,6 @@
     @apply hover:cursor-pointer;
   }
 }
+body {
+  font-family: var(--font-poppins);
+}
