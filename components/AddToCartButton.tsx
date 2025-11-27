@@ -5,7 +5,7 @@ import {ShoppingBag} from "lucide-react";
 import {cn} from "@/lib/utils";
 
 interface Props {
-  product: Product;
+  product?: Product | null | undefined;
   className?: string;
 }
 const AddToCartButton = ({product, className}: Props) => {
