@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import ImageView from "@/components/ImageView";
+import PriceView from "@/components/PriceView";
 import {getProductBySlug} from "@/sanity/queries";
 import {StarIcon} from "lucide-react";
 
@@ -21,17 +22,28 @@ const SingleProductPage = async ({
           <p className="text-sm text-gray-600 tracking-wide">
             {product?.description}
           </p>
+          <div className="flex items-center gap-0.5 text-xs">
+            {[...Array(5)].map((_, index) => (
+              <StarIcon
+                key={index}
+                size={12}
+                className="text-shop_light_green"
+                fill={"#3b9c3c"}
+              />
+            ))}
+            <p className="font-semibold">{`(120)`}</p>
+          </div>
         </div>
-        <div className="flex items-center gap-0.5 text-xs">
-          {[...Array(5)].map((_, index) => (
-            <StarIcon
-              key={index}
-              size={12}
-              className="text-shop_light_green"
-              fill={"#3b9c3c"}
-            />
-          ))}
-          <p className="font-semibold">{`(120)`}</p>
+        <div>
+          <p>
+            {
+              <PriceView
+                price={product?.price}
+                discount={product?.discount}
+                className="text-lg font-bold"
+              />
+            }
+          </p>
         </div>
       </div>
     </Container>
