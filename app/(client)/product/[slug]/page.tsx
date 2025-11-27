@@ -1,4 +1,6 @@
+import AddToCartButton from "@/components/AddToCartButton";
 import Container from "@/components/Container";
+import FavoriteButton from "@/components/FavoriteButton";
 import ImageView from "@/components/ImageView";
 import PriceView from "@/components/PriceView";
 import {getProductBySlug} from "@/sanity/queries";
@@ -34,16 +36,22 @@ const SingleProductPage = async ({
             <p className="font-semibold">{`(120)`}</p>
           </div>
         </div>
-        <div>
-          <p>
-            {
-              <PriceView
-                price={product?.price}
-                discount={product?.discount}
-                className="text-lg font-bold"
-              />
-            }
+        <div className="space-y-2 border-t border-b border-gray-200 py-5">
+          {
+            <PriceView
+              price={product?.price}
+              discount={product?.discount}
+              className="text-lg font-bold"
+            />
+          }
+          <p
+            className={`px-4 py-1.5 font-semibold rounded-lg inline-block text-sm text-center ${product?.stock === 0 ? "bg-red-100 text-red-600" : "text-green-600 bg-green-100"}`}>
+            {(product?.stock as number) > 0 ? "In Stock" : "Out of Stock"}{" "}
           </p>
+        </div>
+        <div className="flex items-center gap-2.5 lg:gap-5 ">
+          <AddToCartButton product={product} className="w-xl" />
+          <FavoriteButton showProduct={true} product={product} />
         </div>
       </div>
     </Container>
