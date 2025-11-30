@@ -24,7 +24,7 @@ const BrandsList = ({brands, selectedBrand, setSelectedBrand}: Props) => {
             <RadioGroupItem
               value={brand?.slug?.current as string}
               id={brand?.slug?.current}
-              className="rounded-md"
+              className="rounded-sm"
             />
             <Label
               htmlFor={`${brand?.slug?.current}`}

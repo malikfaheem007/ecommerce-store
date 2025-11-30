@@ -19,23 +19,22 @@ const PriceList = ({selectedPrice, setSelectedPrice}: Props) => {
     <div className="w-full bg-white p-5">
       <Title className="text-base md:text-base font-black">Price</Title>
       <RadioGroup value={selectedPrice || ""} className="mt-2 space-y-1">
-        {priceArray?.map((Price, index) => (
+        {priceArray?.map((price, index) => (
           <div
             onClick={() => {
-              setSelectedPrice(Price?.value);
+              setSelectedPrice(price?.value);
             }}
             key={index}
             className="flex items-center space-x-2 hover:cursor-pointer">
             <RadioGroupItem
-              value={Price?.title}
-              id={Price?.value}
-              className="rounded-md"
+              value={price?.value}
+              id={price?.value}
+              className="rounded-sm"
             />
             <Label
-              htmlFor={priceArray[0]?.value}
-              //   className={`${selectedBrand === brand?.slug?.current ? "font-semibold text-shop_dark_green" : "font-normal"}`}
-            >
-              {Price?.title}
+              htmlFor={price?.value}
+              className={`${selectedPrice === price?.value ? "font-semibold text-shop_dark_green" : "font-normal"}`}>
+              {price?.title}
             </Label>
           </div>
         ))}
