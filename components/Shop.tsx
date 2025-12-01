@@ -9,6 +9,9 @@ import PriceList from "./shop/PriceList";
 import {useSearchParams} from "next/navigation";
 import {use, useEffect, useState} from "react";
 import {client} from "@/sanity/lib/client";
+import {Loader2} from "lucide-react";
+import NoProductsAvailable from "./NoProductsAvailable";
+import ProductCard from "./ProductCard";
 
 interface Props {
   categories: Category[];
@@ -99,7 +102,27 @@ const Shop = ({categories, brands}: Props) => {
               setSelectedPrice={setSelectedPrice}
             />
           </div>
-          <div>Products</div>
+          <div className="flex-1 pt-5">
+            <div>
+              {loading ?
+                <div className="p-20 flex flex-col gap-2 items-center justify-center bg-white">
+                  <Loader2 className="w-10 h-10 text-shop_dark_green animate-spin" />
+                  <p className="font-semibold tracking-wide text-base">
+                    Product is loading . . .
+                  </p>
+                </div>
+              : products?.length > 0 ?
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+                  {products?.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </div>
+              : <div>
+                  <NoProductsAvailable className="bg-white mt-0" />
+                </div>
+              }
+            </div>
+          </div>
         </div>
       </Container>
     </div>

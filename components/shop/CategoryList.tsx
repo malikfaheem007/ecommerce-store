@@ -24,6 +24,7 @@ const CategoryList = ({
           <div
             onClick={() => {
               setSelectedCategory(category?.slug?.current as string);
+              console.log(category?.slug?.current as string);
             }}
             key={category?._id}
             className="flex items-center space-x-2 hover:cursor-pointer">
