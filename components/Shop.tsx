@@ -21,9 +21,12 @@ interface Props {
 const Shop = ({categories, brands}: Props) => {
   const searchParams = useSearchParams();
   const brandParams = searchParams?.get("brand");
+  const categoryParams = searchParams?.get("category");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    categoryParams || null
+  );
   const [selectedBrand, setSelectedBrand] = useState<string | null>(
     brandParams || null
   );
