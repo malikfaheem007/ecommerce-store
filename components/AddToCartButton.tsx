@@ -5,9 +5,11 @@ import {ShoppingBag} from "lucide-react";
 import {cn} from "@/lib/utils";
 import useStore from "@/store";
 import toast from "react-hot-toast";
+import PriceFormatter from "./PriceFormatter";
+import QuantityButton from "./QuantityButton";
 
 interface Props {
-  product?: Product;
+  product: Product;
   className?: string;
 }
 const AddToCartButton = ({product, className}: Props) => {
@@ -20,19 +22,35 @@ const AddToCartButton = ({product, className}: Props) => {
       toast.success(
         `${product?.name?.substring(0, 12)} ...added successfully!`
       );
+    } else {
+      toast.error("Can not more than available stock");
     }
   };
   return (
-    <div>
-      <Button
-        disabled={isOutOfStock}
-        onClick={handleAddToCart}
-        className={cn(
-          "w-full bg-shop_dark_green/80 text-shop_light_bg shadow-none border border-shop_dark_green/80 font-semibold tracking-wide hover:text-white hover:bg-shop_dark_green hover:border-shop_dark_green hoverEffect",
-          className
-        )}>
-        <ShoppingBag /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
-      </Button>
+    <div className="w-full h-12 flex items-center">
+      {itemCount ?
+        <div className="text-sm w-full">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-darkColor/80">Quantity</span>
+            <QuantityButton product={product} />
+          </div>
+          <div className="flex items-center justify-between border-t pt-1">
+            <span className="text-xs font-semibold">Subtotal</span>
+            <PriceFormatter
+              amount={product?.price ? product?.price * itemCount : 0}
+            />
+          </div>
+        </div>
+      : <Button
+          disabled={isOutOfStock}
+          onClick={handleAddToCart}
+          className={cn(
+            "w-full bg-shop_dark_green/80 text-shop_light_bg shadow-none border border-shop_dark_green/80 font-semibold tracking-wide hover:text-white hover:bg-shop_dark_green hover:border-shop_dark_green hoverEffect",
+            className
+          )}>
+          <ShoppingBag /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+        </Button>
+      }
     </div>
   );
 };
