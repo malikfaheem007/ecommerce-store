@@ -7,6 +7,10 @@ import NoAccess from "@/components/NoAccess";
 import PriceFormatter from "@/components/PriceFormatter";
 import QuantityButton from "@/components/QuantityButton";
 import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import {Separator} from "@/components/ui/separator";
 import {Title} from "@/components/ui/text";
 import {
   Tooltip,
@@ -15,6 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import {cn} from "@/lib/utils";
 import {Address} from "@/sanity.types";
+import {client} from "@/sanity/lib/client";
 import {urlFor} from "@/sanity/lib/image";
 import useStore from "@/store";
 import {useAuth, useUser} from "@clerk/nextjs";
@@ -22,7 +27,7 @@ import {TooltipContent} from "@radix-ui/react-tooltip";
 import {ShoppingBag, Trash} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -42,8 +47,30 @@ const CartPage = ({className, tooltipClassName}: Props) => {
   const groupedItems = useStore((state) => state.getGroupedItems());
   const {isSignedIn} = useAuth();
   const {user} = useUser();
-  //   const [addresses, setAddresses] = useState<ADDRESS_QUERYResult | null>(null);
+  const [addresses, setAddresses] = useState<Address[] | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+
+  const fetchAddresses = async () => {
+    setLoading(true);
+    try {
+      const query = `*[_type == "address"] | order(publishedAt desc)`;
+      const data = await client.fetch(query);
+      setAddresses(data);
+      const defaultAddress = data.find((addr: Address) => addr.default);
+      if (defaultAddress) {
+        setSelectedAddress(defaultAddress);
+      } else if (data.length > 0) {
+        setSelectedAddress(data[0]); // Optional : Select first address if not default
+      }
+    } catch (error) {
+      console.log("Error fetching addresses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
   const handleResetCart = () => {
     const confirmed = window.confirm(
       "Are you sure you want to reset the cart?"
@@ -182,8 +209,61 @@ const CartPage = ({className, tooltipClassName}: Props) => {
                             amount={getSubTotalPrice() - getTotalPrice()}
                           />
                         </div>
+                        <Separator />
+                        <div className="flex items-center justify-between font-semibold text-lg">
+                          <span>Total</span>
+                          <PriceFormatter
+                            amount={getTotalPrice()}
+                            className="text-lg font-bold text-black"
+                          />
+                        </div>
+                        <Button
+                          size={"lg"}
+                          className="w-full rounded-full font-semibold tracking-wide hoverEffect">
+                          {loading ? "Please wait..." : "Proceed to Checkout"}
+                        </Button>
                       </div>
                     </div>
+                    {addresses && (
+                      <div className="bg-white rounded-md mt-5">
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Delivery Address</CardTitle>
+                            <CardContent>
+                              <RadioGroup
+                                defaultValue={addresses
+                                  ?.find((addr) => addr.default)
+                                  ?._id.toString()}>
+                                {addresses?.map((address) => (
+                                  <div
+                                    key={address?._id}
+                                    onClick={() => setSelectedAddress(address)}
+                                    className={`flex items-center space-x-2 mb-4 cursor-pointer ${selectedAddress?._id === address?._id && "text-shop_dark_green"}`}>
+                                    <RadioGroupItem
+                                      value={address?._id.toString()}
+                                    />
+                                    <Label
+                                      htmlFor={`address-${address?._id}`}
+                                      className="grid gap-1.5 flex-1">
+                                      <span className="font-semibold">
+                                        {address?.name}
+                                      </span>
+                                      <span className="text-sm text-darkColor/60">
+                                        {address?.address}, {address?.city},{" "}
+                                        {address?.state}, {address?.zipCode}
+                                      </span>
+                                    </Label>
+                                  </div>
+                                ))}
+                              </RadioGroup>
+                              <Button variant="outline" className="w-full mt-4">
+                                Add New Address
+                              </Button>
+                            </CardContent>
+                          </CardHeader>
+                        </Card>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/*Order summary mobile view */}
