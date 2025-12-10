@@ -1,5 +1,6 @@
 "use client";
 
+import {createCheckoutSession, Metadata} from "@/actions/createCheckoutSession";
 import AddToWishlistButton from "@/components/AddToWishlistButton";
 import Container from "@/components/Container";
 import EmptyCart from "@/components/EmptyCart";
@@ -80,7 +81,27 @@ const CartPage = ({className, tooltipClassName}: Props) => {
       toast.success("Cart reset successfully!");
     }
   };
-
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const metadata: Metadata = {
+        orderNumber: crypto.randomUUID(),
+        customerName: user?.fullName ?? "Unknown",
+        customerEmail: user?.emailAddresses[0]?.emailAddress ?? "Unknown",
+        clerkUserId: user?.id,
+        address: selectedAddress,
+      };
+      const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
+      console.log(checkoutUrl);
+      // if (checkoutUrl) {
+      //   window.location.href = checkoutUrl;
+      // }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="bg-gray-50 pb-52 md:pb-10">
       {isSignedIn ?
@@ -219,6 +240,8 @@ const CartPage = ({className, tooltipClassName}: Props) => {
                         </div>
                         <Button
                           size={"lg"}
+                          disabled={loading}
+                          onClick={handleCheckout}
                           className="w-full rounded-full font-semibold tracking-wide hoverEffect">
                           {loading ? "Please wait..." : "Proceed to Checkout"}
                         </Button>
@@ -269,7 +292,36 @@ const CartPage = ({className, tooltipClassName}: Props) => {
                 {/*Order summary mobile view */}
                 <div className="md:hidden fixed bottom-0 left-0 w-full bg-white pt-2">
                   <div className="bg-white p-4 rounded-lg border mx-4">
-                    <h2>Order Summary</h2>
+                    <h2 className="text-xl font-semibold mb-4 ">
+                      Order Summary
+                    </h2>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span>SubTotal</span>
+                        <PriceFormatter amount={getSubTotalPrice()} />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Discount</span>
+                        <PriceFormatter
+                          amount={getSubTotalPrice() - getTotalPrice()}
+                        />
+                      </div>
+                      <Separator />
+                      <div className="flex items-center justify-between font-semibold text-lg">
+                        <span>Total</span>
+                        <PriceFormatter
+                          amount={getTotalPrice()}
+                          className="text-lg font-bold text-black"
+                        />
+                      </div>
+                      <Button
+                        size={"lg"}
+                        disabled={loading}
+                        onClick={handleCheckout}
+                        className="w-full rounded-full font-semibold tracking-wide hoverEffect">
+                        {loading ? "Please wait..." : "Proceed to Checkout"}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
