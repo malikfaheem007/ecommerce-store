@@ -1,3 +1,4 @@
+"use client";
 import {cn} from "@/lib/utils";
 import {Product} from "@/sanity.types";
 import useStore from "@/store";
