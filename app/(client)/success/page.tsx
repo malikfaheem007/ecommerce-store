@@ -4,7 +4,8 @@ import {useUser} from "@clerk/nextjs";
 import {useSearchParams} from "next/navigation";
 import {useEffect} from "react";
 import {motion} from "motion/react";
-import {Check} from "lucide-react";
+import {Check, Home, Package, ShoppingBag} from "lucide-react";
+import Link from "next/link";
 const SuccessPage = () => {
   const {user} = useUser();
   const {resetCart} = useStore();
@@ -18,7 +19,11 @@ const SuccessPage = () => {
   }, [session_id, resetCart]);
   return (
     <div className="py-5 bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center mx-4">
-      <div>
+      <motion.div
+        initial={{opacity: 0, y: 20}}
+        animate={{opacity: 1, y: 0}}
+        transition={{duration: 0.5, delay: 0.2, type: "spring", stiffness: 200}}
+        className="flex flex-col gap-8 bg-white rounded-2xl shadow-2xl p-6 max-w-xl w-full text-center ">
         <motion.div
           initial={{scale: 0}}
           animate={{scale: 1}}
@@ -40,7 +45,27 @@ const SuccessPage = () => {
             <span className="text-black font-semibold ">{orderNumber}</span>
           </p>
         </div>
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Link
+            href="/"
+            className="flex items-center justify-center px-4 py-3 font-semibold bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-300 shadow-md">
+            <Home className="w-5 h-5 mr-2" />
+            Home
+          </Link>
+          <Link
+            href="/orders"
+            className="flex items-center justify-center px-4 py-3 font-semibold bg-shop_light_green text-black border border-shop_light_green rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md">
+            <Package className="w-5 h-5 mr-2" />
+            Orders
+          </Link>
+          <Link
+            href="/"
+            className="flex items-center justify-center px-4 py-3 font-semibold bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-300 shadow-md">
+            <ShoppingBag className="w-5 h-5 mr-2" />
+            Shop
+          </Link>
+        </div>
+      </motion.div>
     </div>
   );
 };
