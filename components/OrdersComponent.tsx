@@ -13,11 +13,14 @@ import PriceFormatter from "./PriceFormatter";
 import {X} from "lucide-react";
 import {useState} from "react";
 import OrderDetailDialog from "./OrderDetailDialog";
+import toast from "react-hot-toast";
 const OrdersComponent = ({orders}: {orders: MY_ORDERS_QUERY_RESULT}) => {
   const [selectedOrder, setSelectedOrder] = useState<
     MY_ORDERS_QUERY_RESULT[number] | null
   >(null);
-
+  const handleDelete = () => {
+    toast.error("Delete method applied for Admin");
+  };
   return (
     <>
       <TableBody>
@@ -62,10 +65,10 @@ const OrdersComponent = ({orders}: {orders: MY_ORDERS_QUERY_RESULT}) => {
                     )}
                   </TableCell>
                   <TableCell
-                    //   onClick={(event) => {
-                    //     event.stopPropagation();
-                    //     handleDelete();
-                    //   }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDelete();
+                    }}
                     className="flex items-center justify-center group">
                     <X
                       size={20}
