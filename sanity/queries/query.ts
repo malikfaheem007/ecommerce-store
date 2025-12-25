@@ -24,6 +24,22 @@ const MY_ORDERS_QUERY =
     ...,product->
   }
 }`);
+const GET_ALL_BLOG =
+  defineQuery(`*[_type == "blog"] | order(publishedAt desc)[0...$quantity]{
+  ..., blogcategories[]->{
+      title
+  }
+}`);
+const SINGLE_BLOG_QUERY =
+  defineQuery(`*[_type == "blog" && slug.current == $slug][0]{
+    ...,author->{
+      name,
+      image,}
+  blogcategories[]->{
+      title,
+      "slug": slug.current,
+  }
+}`);
 export {
   BRANDS_QUERY,
   LATEST_BLOG_QUERY,
@@ -31,4 +47,6 @@ export {
   PRODUCT_BY_SLUG_QUERY,
   BRAND_QUERY,
   MY_ORDERS_QUERY,
+  GET_ALL_BLOG,
+  SINGLE_BLOG_QUERY,
 };

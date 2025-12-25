@@ -3,9 +3,11 @@ import {
   BRAND_QUERY,
   BRANDS_QUERY,
   DEAL_PRODUCTS,
+  GET_ALL_BLOG,
   LATEST_BLOG_QUERY,
   MY_ORDERS_QUERY,
   PRODUCT_BY_SLUG_QUERY,
+  SINGLE_BLOG_QUERY,
 } from "./query";
 
 const getCategories = async (quantity?: number) => {
@@ -89,7 +91,30 @@ const getMyOrders = async (userId: string) => {
     return null;
   }
 };
-
+const getAllBlogs = async (quantity: number) => {
+  try {
+    const {data} = await sanityFetch({
+      query: GET_ALL_BLOG,
+      params: {quantity},
+    });
+    return data ?? [];
+  } catch (error) {
+    console.log("Error fetching all blogs:", error);
+    return [];
+  }
+};
+const getSingleBlog = async (slug: string) => {
+  try {
+    const {data} = await sanityFetch({
+      query: SINGLE_BLOG_QUERY,
+      params: {slug},
+    });
+    return data ?? [];
+  } catch (error) {
+    console.log("Error fetching single blog:", error);
+    return [];
+  }
+};
 export {
   getCategories,
   getAllBrands,
@@ -98,4 +123,6 @@ export {
   getProductBySlug,
   getBrand,
   getMyOrders,
+  getAllBlogs,
+  getSingleBlog,
 };

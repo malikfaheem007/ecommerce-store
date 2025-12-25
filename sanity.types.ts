@@ -719,6 +719,43 @@ export type MY_ORDERS_QUERY_RESULT = Array<{
   orderDate?: string;
 }>;
 
+// Source: sanity\queries\query.ts
+// Variable: GET_ALL_BLOG
+// Query: *[_type == "blog"] | order(publishedAt desc)[0...$quantity]{  ..., blogcategories[]->{      title  }}
+export type GET_ALL_BLOG_RESULT = Array<{
+  _id: string;
+  _type: "blog";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  author?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "author";
+  };
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  blogcategories: Array<{
+    title: string | null;
+  }> | null;
+  publishedAt?: string;
+  isLatest?: boolean;
+  body?: BlockContent;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -729,5 +766,6 @@ declare module "@sanity/client" {
     '*[_type == "product" && slug.current == $slug] | order(name asc)[0]': PRODUCT_BY_SLUG_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug] {\n  ...,"brandName": brand->title\n}': BRAND_QUERY_RESULT;
     '*[_type == "order" && clerkUserId == $userId] | order(orderData desc){\n  ...,products[]{\n    ...,product->\n  }\n}': MY_ORDERS_QUERY_RESULT;
+    '*[_type == "blog"] | order(publishedAt desc)[0...$quantity]{\n  ..., blogcategories[]->{\n      title\n  }\n}': GET_ALL_BLOG_RESULT;
   }
 }
